@@ -33,6 +33,11 @@
 #include <Core/Exception.h>
 #include <Core/Settings.h>
 
+// --- HAX ---
+DEFINE_SPADES_SETTING(hx_nospread, "0");
+DEFINE_SPADES_SETTING(hx_norecoil, "0");
+// --- HAX ---
+
 namespace spades {
 	namespace client {
 
@@ -561,6 +566,12 @@ namespace spades {
 				spread *= 0.5f;
 			}
 
+			// --- HAX ---
+			if (hx_nospread) {
+			  spread = 0.0f;
+			}
+			// --- HAX ---
+
 			// pyspades takes destroying more than one block as a
 			// speed hack (shotgun does this)
 			bool blockDestroyed = false;
@@ -760,6 +771,13 @@ namespace spades {
 			// in AoS 0.75's way
 			Vector3 o = orientation;
 			Vector3 rec = weapon->GetRecoil();
+
+			// --- HAX ---
+			if (hx_norecoil) {
+			  rec = MakeVector3(0.f, 0.f, 0.f);
+			}
+			// --- HAX ---
+			
 			float upLimit = Vector3::Dot(GetFront2D(), o);
 			upLimit -= 0.03f; // ???
 			o += GetUp() * std::min(rec.y, std::max(0.f, upLimit)) *
@@ -775,6 +793,7 @@ namespace spades {
 			}
 			o += GetRight() * rec.x * triWave * (input.crouch ? 0.5f : 1.0f);
 			o = o.Normalize();
+			
 			SetOrientation(o);
 
 			reloadingServerSide = false;
