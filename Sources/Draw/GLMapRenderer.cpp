@@ -35,6 +35,10 @@
 #include "GLShadowShader.h"
 #include "IGLDevice.h"
 
+// --- HAX ---
+DEFINE_SPADES_SETTING(hx_nofog, "0");
+// --- HAX ---
+
 namespace spades {
 	namespace draw {
 		void GLMapRenderer::PreloadShaders(spades::draw::GLRenderer *renderer) {
@@ -214,6 +218,12 @@ namespace spades {
 			static GLShadowShader shadowShader;
 			shadowShader(renderer, basicProgram, 2);
 
+			// --- HAX ---
+			static GLProgramUniform fogDisable("fogDisable");
+			fogDisable(basicProgram);
+			fogDisable.SetValue(std::stoi(hx_nofog));
+			// --- HAX ---
+			
 			static GLProgramUniform fogDistance("fogDistance");
 			fogDistance(basicProgram);
 			fogDistance.SetValue(renderer->GetFogDistance());
@@ -324,6 +334,12 @@ namespace spades {
 
 			dlightProgram->Use();
 
+			// --- HAX ---
+			static GLProgramUniform fogDisable("fogDisable");
+			fogDisable(dlightProgram);
+			fogDisable.SetValue(std::stoi(hx_nofog));
+			// --- HAX ---
+			
 			static GLProgramUniform fogDistance("fogDistance");
 			fogDistance(dlightProgram);
 			fogDistance.SetValue(renderer->GetFogDistance());

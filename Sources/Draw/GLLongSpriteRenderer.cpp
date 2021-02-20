@@ -27,6 +27,10 @@
 #include "SWFeatureLevel.h"
 #include <Core/Settings.h>
 
+// --- HAX ---
+SPADES_SETTING(hx_nofog);
+// --- HAX ---
+
 namespace spades {
 	namespace draw {
 
@@ -105,6 +109,12 @@ namespace spades {
 			projectionViewMatrix.SetValue(renderer->GetProjectionViewMatrix());
 			viewMatrix.SetValue(renderer->GetViewMatrix());
 
+			// --- HAX ---
+			static GLProgramUniform fogDisable("fogDisable");
+			fogDisable(program);
+			fogDisable.SetValue(std::stoi(hx_nofog));
+			// --- HAX ---
+			
 			fogDistance.SetValue(renderer->GetFogDistance());
 
 			const auto &viewOrigin = renderer->GetSceneDef().viewOrigin;

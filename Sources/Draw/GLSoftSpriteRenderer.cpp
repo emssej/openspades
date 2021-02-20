@@ -29,6 +29,10 @@
 #include "IGLDevice.h"
 #include "SWFeatureLevel.h" // for fastRcp
 
+// --- HAX ---
+SPADES_SETTING(hx_nofog);
+// --- HAX ---
+
 namespace spades {
 	namespace draw {
 
@@ -130,6 +134,12 @@ namespace spades {
 
 			fogDistance.SetValue(renderer->GetFogDistance());
 
+			// --- HAX ---
+			static GLProgramUniform fogDisable("fogDisable");
+			fogDisable(program);
+			fogDisable.SetValue(std::stoi(hx_nofog));
+			// --- HAX ---
+			
 			Vector3 fogCol = renderer->GetFogColor();
 			fogCol *= fogCol; // linearize
 			fogColor.SetValue(fogCol.x, fogCol.y, fogCol.z);

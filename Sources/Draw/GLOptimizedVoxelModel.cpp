@@ -36,6 +36,10 @@
 #include "GLShadowShader.h"
 #include "IGLShadowMapRenderer.h"
 
+// --- HAX ---
+SPADES_SETTING(hx_nofog);
+// --- HAX ---
+
 namespace spades {
 	namespace draw {
 		void GLOptimizedVoxelModel::PreloadShaders(spades::draw::GLRenderer *renderer) {
@@ -622,6 +626,12 @@ namespace spades {
 			static GLShadowShader shadowShader;
 			shadowShader(renderer, program, 2);
 
+			// --- HAX ---
+			static GLProgramUniform fogDisable("fogDisable");
+			fogDisable(program);
+			fogDisable.SetValue(std::stoi(hx_nofog));
+			// --- HAX ---
+			
 			static GLProgramUniform fogDistance("fogDistance");
 			fogDistance(program);
 			fogDistance.SetValue(renderer->GetFogDistance());
@@ -770,6 +780,12 @@ namespace spades {
 
 			static GLDynamicLightShader dlightShader;
 
+			// --- HAX ---
+			static GLProgramUniform fogDisable("fogDisable");
+			fogDisable(dlightProgram);
+			fogDisable.SetValue(std::stoi(hx_nofog));
+			// --- HAX ---
+			
 			static GLProgramUniform fogDistance("fogDistance");
 			fogDistance(dlightProgram);
 			fogDistance.SetValue(renderer->GetFogDistance());

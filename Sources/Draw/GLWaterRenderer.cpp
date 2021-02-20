@@ -38,6 +38,10 @@
 #include "GLWaterRenderer.h"
 #include "IGLDevice.h"
 
+// --- HAX ---
+SPADES_SETTING(hx_nofog);
+// --- HAX ---
+
 namespace spades {
 	namespace draw {
 
@@ -706,6 +710,12 @@ namespace spades {
 				fovTan(prg);
 				waterPlane(prg);
 
+			// --- HAX ---
+			static GLProgramUniform fogDisable("fogDisable");
+			fogDisable(prg);
+			fogDisable.SetValue(std::stoi(hx_nofog));
+			// --- HAX ---
+				
 				projectionViewModelMatrix.SetValue(renderer->GetProjectionViewMatrix() * mat);
 				projectionViewMatrix.SetValue(renderer->GetProjectionViewMatrix());
 				modelMatrix.SetValue(mat);
