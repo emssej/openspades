@@ -36,6 +36,13 @@
 // --- HAX ---
 DEFINE_SPADES_SETTING(hx_nospread, "0");
 DEFINE_SPADES_SETTING(hx_norecoil, "0");
+DEFINE_SPADES_SETTING(hx_hit_distance, "128.0");
+DEFINE_SPADES_SETTING(hx_grenade_distance, "1.0");
+// Removes smooth movement and makes it so your view angle does not
+// impact the movement speed.
+DEFINE_SPADES_SETTING(hx_movement, "0");
+DEFINE_SPADES_SETTING(hx_movement_airspeed, "0.1");
+DEFINE_SPADES_SETTING(hx_movement_jumpheight, "0.36");
 // --- HAX ---
 
 namespace spades {
@@ -567,7 +574,7 @@ namespace spades {
 			}
 
 			// --- HAX ---
-			if (hx_nospread) {
+			if (std::stoi(hx_nospread)) {
 			  spread = 0.0f;
 			}
 			// --- HAX ---
@@ -704,8 +711,9 @@ namespace spades {
 						}
 					}
 				} else if (hitPlayer != NULL) {
-					if (hitPlayerDistance < 128.f) {
-
+  				   // --- HAX ---
+				   if (hitPlayerDistance < std::stof(hx_hit_distance)) {
+					// --- HAX --- 
 						finalHitPos = muzzle + dir * hitPlayerActualDistance;
 
 						switch (hitPart) {
@@ -773,7 +781,7 @@ namespace spades {
 			Vector3 rec = weapon->GetRecoil();
 
 			// --- HAX ---
-			if (hx_norecoil) {
+			if (std::stoi(hx_norecoil)) {
 			  rec = MakeVector3(0.f, 0.f, 0.f);
 			}
 			// --- HAX ---
@@ -807,7 +815,9 @@ namespace spades {
 			grenades--;
 
 			Vector3 muzzle = GetEye() + GetFront() * 0.1f;
-			Vector3 vel = GetFront() * 1.f;
+			// --- HAX ---
+			Vector3 vel = GetFront() * std::stof(hx_grenade_distance);
+			// --- HAX ---
 			float fuse = world->GetTime() - grenadeTime;
 			fuse = 3.f - fuse;
 
@@ -1126,7 +1136,11 @@ namespace spades {
 
 		void Player::MovePlayer(float fsynctics) {
 			if (input.jump && (!lastJump) && IsOnGroundOrWade()) {
-				velocity.z = -0.36f;
+			   if (std::stoi(hx_movement)) {
+				  velocity.z = -std::stof(hx_movement_jumpheight);
+			   } else {
+				  velocity.z = -0.36f;
+				}
 				lastJump = true;
 				if (world->GetListener() && world->GetTime() > lastJumpTime + .1f) {
 					world->GetListener()->PlayerJumped(this);
@@ -1137,23 +1151,41 @@ namespace spades {
 			}
 
 			float f = fsynctics;
-			if (airborne)
-				f *= 0.1f;
-			else if (input.crouch)
-				f *= 0.3f;
-			else if ((weapInput.secondary && IsToolWeapon()) || input.sneak)
-				f *= 0.5f;
-			else if (input.sprint)
-				f *= 1.3f;
+
+			// --- HAX ---
+			if (std::stoi(hx_movement)) {
+			  if (airborne)
+				 f *= std::stof(hx_movement_airspeed);
+			  else
+				 f *= 1.3f;
+			} else {
+			  if (airborne)
+				 f *= 0.1f;
+			  else if (input.crouch)
+				 f *= 0.3f;
+			  else if ((weapInput.secondary && IsToolWeapon()) || input.sneak)
+				 f *= 0.5f;
+			  else if (input.sprint)
+				 f *= 1.3f;
+			}
+			// --- HAX ---
+			
 			if ((input.moveForward || input.moveBackward) && (input.moveRight || input.moveLeft))
 				f /= sqrtf(2.f);
 
+			
 			// looking up or down should alter speed
 			const float maxVertLookSlowdown = 0.9f;
 			const float vertLookSlowdownStart = 0.65f; // about 40 degrees
 			float slowdownByVertLook =
 			  std::max(std::abs(GetFront().z) - vertLookSlowdownStart, 0.0f) /
 			  (1.0f - vertLookSlowdownStart) * maxVertLookSlowdown;
+
+			// --- HAX ---
+			if (std::stoi(hx_movement)) {
+			  slowdownByVertLook = 0.f;
+			}
+			// --- HAX ---
 
 			Vector3 front = GetFront2D() * (1.0f - slowdownByVertLook);
 			Vector3 left = GetLeft();
