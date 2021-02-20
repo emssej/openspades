@@ -42,6 +42,9 @@ namespace spades {
 			/** Renders only in depth buffer (optional) */
 			virtual void Prerender(std::vector<client::ModelRenderParam> params) = 0;
 
+			/** Renders in stencil bunfer */
+			virtual void RenderStencil(std::vector<client::ModelRenderParam> params) = 0;
+
 			/** Renders sunlighted solid geometry */
 			virtual void RenderSunlightPass(std::vector<client::ModelRenderParam> params) = 0;
 

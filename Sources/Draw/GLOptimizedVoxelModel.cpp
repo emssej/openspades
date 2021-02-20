@@ -517,6 +517,11 @@ namespace spades {
 			RenderSunlightPass(params);
 		}
 
+		void GLOptimizedVoxelModel::RenderStencil(std::vector<client::ModelRenderParam> params) {
+			SPADES_MARK_FUNCTION();
+			// ????
+		}
+
 		void
 		GLOptimizedVoxelModel::RenderShadowMapPass(std::vector<client::ModelRenderParam> params) {
 			SPADES_MARK_FUNCTION();

@@ -50,6 +50,9 @@ namespace spades {
 
 			void DepthMask(bool) override;
 			void ColorMask(bool r, bool g, bool b, bool a) override;
+			void StencilMask(UInteger mask) override;
+			void StencilOp(Enum sfail, Enum dpfail, Enum dppass) override;
+			void StencilFunc(Enum func, Integer ref, UInteger mask) override;
 
 			void FrontFace(Enum) override;
 			void Enable(Enum state, bool) override;

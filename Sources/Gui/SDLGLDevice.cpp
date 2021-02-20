@@ -279,6 +279,27 @@ namespace spades {
 			CheckError();
 		}
 
+		void SDLGLDevice::StencilMask(UInteger mask) {
+			CheckExistence(glStencilMask);
+			glStencilMask(mask);
+			CheckError();
+		}
+
+		void SDLGLDevice::StencilOp(Enum sfail, Enum dpfail, Enum dppass) {
+			CheckExistence(glStencilOp);
+			Enum args[3] = {sfail, dpfail, dppass};
+			GLenum glArgs[3];
+			for (int i(0); i < 3; ++i) {
+				switch(args[i]) {
+					case Replace: glArgs[i] = GL_REPLACE; break;
+					case Keep: glArgs[i] = GL_KEEP; break;
+					default: SPInvalidEnum("stencilop", args[i]);
+				}
+			}
+			glStencilOp(glArgs[0], glArgs[1], glArgs[2]);
+			CheckError();
+		}
+
 		void SDLGLDevice::FrontFace(Enum val) {
 			CheckExistence(glFrontFace);
 			switch (val) {
@@ -420,6 +441,16 @@ namespace spades {
 				case Greater: glDepthFunc(GL_GREATER); break;
 				case GreaterOrEqual: glDepthFunc(GL_GEQUAL); break;
 				case NotEqual: glDepthFunc(GL_NOTEQUAL); break;
+				default: SPInvalidEnum("func", func);
+			}
+			CheckError();
+		}
+
+		void SDLGLDevice::StencilFunc(Enum func, Integer ref, UInteger mask) {
+			SPADES_MARK_FUNCTION();
+			CheckExistence(glStencilFunc);
+			switch (func) {
+				case Always: glDepthFunc(GL_ALWAYS); break;
 				default: SPInvalidEnum("func", func);
 			}
 			CheckError();

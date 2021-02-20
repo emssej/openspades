@@ -81,6 +81,8 @@ namespace spades {
 
 			void Prerender(std::vector<client::ModelRenderParam> params) override;
 
+			void RenderStencil(std::vector<client::ModelRenderParam> params) override;
+
 			void RenderShadowMapPass(std::vector<client::ModelRenderParam> params) override;
 
 			void RenderSunlightPass(std::vector<client::ModelRenderParam> params) override;

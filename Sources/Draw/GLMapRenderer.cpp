@@ -148,6 +148,7 @@ namespace spades {
 		void GLMapRenderer::Prerender() {
 			SPADES_MARK_FUNCTION();
 			//depth-only pass
+			//also draw in the stencil buffer
 
 			GLProfiler::Context profiler(renderer->GetGLProfiler(), "Map");
 			Vector3 eye = renderer->GetSceneDef().viewOrigin;
@@ -155,6 +156,10 @@ namespace spades {
 			device->Enable(IGLDevice::CullFace, true);
 			device->Enable(IGLDevice::DepthTest, true);
 			device->ColorMask(false, false, false, false);
+
+			/*device->Enable(IGLDevice::StencilTest, true);
+			device->StencilFunc(IGLDevice::Always, 1, 0xFF);
+			device->StencilMask(0xFF);*/
 
 			depthonlyProgram->Use();
 			static GLProgramAttribute positionAttribute("positionAttribute");

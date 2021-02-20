@@ -681,6 +681,7 @@ namespace spades {
 				device->DepthFunc(IGLDevice::Less);
 				RenderDebugLines();
 			}
+
 		}
 
 		void GLRenderer::EndScene() {

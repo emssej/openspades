@@ -55,10 +55,15 @@ namespace spades {
 
 				// State
 				DepthTest,
+				StencilTest,
 				CullFace,
 				Blend,
 				Multisample,
 				FramebufferSRGB,
+
+				// Operations
+				Keep,
+				Replace,
 
 				// Parameters
 				FramebufferBinding,
@@ -270,6 +275,9 @@ namespace spades {
 
 			virtual void DepthMask(bool) = 0;
 			virtual void ColorMask(bool r, bool g, bool b, bool a) = 0;
+			virtual void StencilMask(UInteger) = 0;
+			virtual void StencilOp(Enum sfail, Enum dpfail, Enum dppass) = 0;
+			virtual void StencilFunc(Enum func, Integer ref, UInteger mask) = 0;
 
 			virtual void Finish() = 0;
 			virtual void Flush() = 0;

@@ -38,11 +38,13 @@ namespace spades {
 			Matrix4 matrix;
 			Vector3 customColor;
 			bool depthHack;
+			bool xray;
 
 			ModelRenderParam() {
 				matrix = Matrix4::Identity();
 				customColor = MakeVector3(0, 0, 0);
 				depthHack = false;
+				xray = false;
 			}
 		};
 

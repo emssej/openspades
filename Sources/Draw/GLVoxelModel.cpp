@@ -263,6 +263,12 @@ namespace spades {
 			RenderSunlightPass(params);
 		}
 
+		void GLVoxelModel::RenderStencil(std::vector<client::ModelRenderParam> params) {
+			device->Enable(IGLDevice::CullFace, true);
+			device->Enable(IGLDevice::DepthTest, false);
+			device->Enable(IGLDevice::StencilBufferBit, true);
+		}
+
 		void GLVoxelModel::RenderShadowMapPass(std::vector<client::ModelRenderParam> params) {
 			SPADES_MARK_FUNCTION();
 
