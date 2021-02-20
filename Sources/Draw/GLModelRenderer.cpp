@@ -70,6 +70,9 @@ namespace spades {
 
 		void GLModelRenderer::Prerender() {
 			device->ColorMask(false, false, false, false);
+			device->Enable(IGLDevice::StencilTest, true);
+			device->StencilFunc(IGLDevice::Always, 1, 0xFF);
+			device->StencilMask(0xFF);
 
 			GLProfiler::Context profiler(renderer->GetGLProfiler(), "Model [%d model(s), %d unique model type(s)]", modelCount,
 								(int)models.size());

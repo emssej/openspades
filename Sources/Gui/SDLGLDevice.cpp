@@ -212,6 +212,12 @@ namespace spades {
 			CheckError();
 		}
 
+		void SDLGLDevice::ClearStencil(float v) {
+			CheckExistence(glClearStencil);
+			glClearStencil(v);
+			CheckError();
+		}
+
 		void SDLGLDevice::ClearDepth(float v) {
 			CheckExistence(glClearDepth);
 			glClearDepth(v);
@@ -316,6 +322,7 @@ namespace spades {
 			switch (state) {
 				case DepthTest: type = GL_DEPTH_TEST; break;
 				case CullFace: type = GL_CULL_FACE; break;
+				case StencilTest: type = GL_STENCIL_TEST; break;
 				case Blend: type = GL_BLEND; break;
 				case Texture2D: type = GL_TEXTURE_2D; break;
 				case Multisample: type = GL_MULTISAMPLE; break;

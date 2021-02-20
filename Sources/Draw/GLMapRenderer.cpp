@@ -157,9 +157,6 @@ namespace spades {
 			device->Enable(IGLDevice::DepthTest, true);
 			device->ColorMask(false, false, false, false);
 
-			/*device->Enable(IGLDevice::StencilTest, true);
-			device->StencilFunc(IGLDevice::Always, 1, 0xFF);
-			device->StencilMask(0xFF);*/
 
 			depthonlyProgram->Use();
 			static GLProgramAttribute positionAttribute("positionAttribute");
@@ -196,12 +193,19 @@ namespace spades {
 
 			GLProfiler::Context profiler(renderer->GetGLProfiler(), "Map");
 
+			device->Enable(IGLDevice::StencilTest, true);
+			device->StencilFunc(IGLDevice::Always, 1, 0xFF);
+			device->StencilMask(0xFF);
+			device->StencilOp(IGLDevice::Keep, IGLDevice::Keep, IGLDevice::Replace);
+			device->ClearStencil(0);
+
 			Vector3 eye = renderer->GetSceneDef().viewOrigin;
 
 			// draw back face to avoid cheating.
 			// without this, players can see through blocks by
 			// covering themselves by ones.
-			RenderBackface();
+			// fuck that shit we wanna cheat
+			// RenderBackface();
 
 			device->ActiveTexture(0);
 			aoImage->Bind(IGLDevice::Texture2D);

@@ -43,6 +43,7 @@ namespace spades {
 
 			void ClearDepth(Float) override;
 			void ClearColor(Float, Float, Float, Float) override;
+			void ClearStencil(Float) override;
 			void Clear(Enum) override;
 
 			void Finish() override;

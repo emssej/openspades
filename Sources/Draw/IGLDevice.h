@@ -270,6 +270,7 @@ namespace spades {
 			virtual void Viewport(Integer x, Integer y, Sizei width, Sizei height) = 0;
 
 			virtual void ClearDepth(Float) = 0;
+			virtual void ClearStencil(Float) = 0;
 			virtual void ClearColor(Float, Float, Float, Float) = 0;
 			virtual void Clear(Enum) = 0;
 
